@@ -43,7 +43,7 @@ Remember to set the posts you would like to protect by adding `Protect` in the C
 ## How It Works
 
 * On build, the plugin:
-1. Looks for posts marked with the Active category link.
+1. Looks for posts marked with the Protect category tag.
 2. Extracts the .content block from the post.
 3. Encrypts it with AES-256-CBC using the password.
 4. Replaces the content with a modal + decryption script.
