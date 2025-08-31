@@ -51,6 +51,7 @@ PROTECTOR_PASSWORD="yoursecret" python encrypt_md.py
 ```
 * This replaces the .md file with an encrypted YAML blob (first line starts with ciphertext:).
 * You should only commit the encrypted versions to GitHub.
+* Make sure that the password you use to encrypt markdown files is the same as the one in you GitHub env
 
 ## 🔄 How It Works
 ### 🔐 Markdown-Level Encryption
