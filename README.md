@@ -1,6 +1,8 @@
 # Chirpy Page Protector Plugin
+This plugin provides two layers of protection for your Chirpy-based Jekyll blog:
 
-This plugin encrypts selected pages of your Chirpy-based Jekyll site and displays a password modal when visitors try to access them. The encryption is applied after the site has been generated, meaning your markdown files remain in plaintext locally, you must keep them private yourself.
+1. Markdown-level encryption – prevents sensitive posts from being exposed in your GitHub repository.
+2. Site-level encryption – ensures published pages are locked behind a password modal.
 
 ## Features
 
@@ -15,44 +17,61 @@ This plugin encrypts selected pages of your Chirpy-based Jekyll site and display
 🎯 Works with Chirpy theme’s generated _site content
 
 ⚠️ Important Notes
+You must encrypt your markdown files with the encrypt_md.py script before pushing changes to your repository.
 
-Markdown files are NOT encrypted.
-The plugin only encrypts HTML content inside _site/ after site generation.
-→ You must keep your source .md files private (e.g., in a private repo).
+If you leave them unencrypted:
+1. The raw markdown files (including sensitive write-ups) will remain publicly accessible in your GitHub repository.
+2. The generated site will still be encrypted, but someone could bypass it by directly reading your repo.
 
+## Installation for Github Pages
 
-## Installation & Usage for Github Pages
-
-1. Copy the Ruby script into your project (e.g., encrypt_posts.rb).
-2. Ensure you have the required gems installed:
-```bash
-gem install nokogiri
+1. Copy the two ruby plugins into your `_plugins` folder.
+2. Copy the python script to your project's root dir
+3.  Add the required gems to your Gemfile:
 ```
-3. Modify `.github/workflows/pages-deploy.yml` to include the code below after the site is built:
-```yml
-- name: Run protector
+gem "nokogiri"
+```
+4. Modify .github/workflows/pages-deploy.yml to run the protector after site build:
+```yaml
+- name: Run site protector
   run: bundle exec ruby _plugins/protector.rb
   env:
     PROTECTOR_PASSWORD: ${{ secrets.PROTECTOR_PASSWORD }}
 ```
-5. Set the `PROTECTOR_PASSWORD` enviromnment variable in `Settings → Secrets and variables → Actions -> New repository secret`
-6. You can now deploy the page like always.
+5. Add your password as a GitHub Actions secret:
+Go to Settings → Secrets and variables → Actions → New repository secret
+Name it PROTECTOR_PASSWORD
 
-Remember to set the posts you would like to protect by adding `Protect` in the Categories section 
+##  Usage 
+1. To encrypt markdown files and posts make sure that in your categories section you have written `Protect`
+2. Local Encryption of Markdown Files
+Use the Python script to encrypt posts with the Active category before committing:
+```
+PROTECTOR_PASSWORD="yoursecret" python encrypt_md.py
+```
+* This replaces the .md file with an encrypted YAML blob (first line starts with ciphertext:).
+* You should only commit the encrypted versions to GitHub.
 
-## How It Works
+## 🔄 How It Works
+### 🔐 Markdown-Level Encryption
 
-* On build, the plugin:
-1. Looks for posts marked with the Protect category tag.
-2. Extracts the .content block from the post.
-3. Encrypts it with AES-256-CBC using the password.
-4. Replaces the content with a modal + decryption script.
+1. `encrypt_md.py` searches _posts/ for files with the `Protect` category.
+2. The script encrypts the full markdown with AES-256-CBC + PBKDF2-HMAC-SHA256.
+3. The file is replaced with encrypted YAML (ciphertext, iv, salt, hmac).
+4. Only encrypted files should be pushed to GitHub.
 
-* On the client side:
-1. Visitors see a lock modal.
-2. They enter the password.
-3. The Web Crypto API verifies the HMAC and decrypts the content.
-4. The post content is displayed dynamically.
+### 🔓 Auto-Decryption (Build Step)
+
+1. `decrypt_md.rb` runs during the Jekyll build.
+2. If a file starts with ciphertext:, it is decrypted using your password.
+3. Jekyll builds the site normally.
+
+### 🔒 Site-Level Encryption (Deployment Step)
+
+1. After build, protector.rb searches for posts in the Protect category.
+2. The .content block is encrypted with AES-256-CBC.
+3 .The block is replaced with a modal + client-side WebCrypto decryption script.
+4. Visitors must enter the password to view content.
 
 ## Demo UI (Modal)
 
