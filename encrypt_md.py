@@ -60,7 +60,7 @@ def encrypt_md_file(path: Path):
         return
 
     categories = fm.get("categories", [])
-    if "Active" not in categories:
+    if "Protect" not in categories:
         return
 
     print(f"Encrypting: {path}")
