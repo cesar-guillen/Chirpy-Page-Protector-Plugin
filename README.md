@@ -28,7 +28,7 @@ If you leave them unencrypted:
 1. Copy the two ruby plugins into your `_plugins` folder.
 2. Copy the python script to your project's root dir
 3. Copy `modal.css` into `/assets/css/modal.css` and add the following line at the end of `_layouts/post.html`
-```
+```html
 <link rel="stylesheet" href="{{ '/assets/css/modal.css' | relative_url }}">
 ```
 4.  Add the required gems to your Gemfile:
@@ -50,7 +50,7 @@ Name it PROTECTOR_PASSWORD
 1. To encrypt markdown files and posts make sure that in your categories section you have written `Protect`
 2. Local Encryption of Markdown Files
 Use the Python script to encrypt posts with the Active category before committing:
-```
+```bash
 PROTECTOR_PASSWORD="yoursecret" python encrypt_md.py
 ```
 * This replaces the .md file with an encrypted YAML blob (first line starts with ciphertext:).
