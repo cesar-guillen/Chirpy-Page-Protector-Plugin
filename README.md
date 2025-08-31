@@ -51,7 +51,7 @@ Name it PROTECTOR_PASSWORD
 2. Local Encryption of Markdown Files
 Use the Python script to encrypt posts with the Active category before committing:
 ```bash
-PROTECTOR_PASSWORD="yoursecret" python encrypt_md.py
+PROTECTOR_PASSWORD="yoursecret" python3 encrypt_md.py
 ```
 * This replaces the .md file with an encrypted YAML blob (first line starts with ciphertext:).
 * You should only commit the encrypted versions to GitHub.
