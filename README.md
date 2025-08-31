@@ -27,18 +27,22 @@ If you leave them unencrypted:
 
 1. Copy the two ruby plugins into your `_plugins` folder.
 2. Copy the python script to your project's root dir
-3.  Add the required gems to your Gemfile:
+3. Copy `modal.css` into `/assets/css/modal.css` and add the following line at the end of `_layouts/post.html`
+```
+<link rel="stylesheet" href="{{ '/assets/css/modal.css' | relative_url }}">
+```
+4.  Add the required gems to your Gemfile:
 ```
 gem "nokogiri"
 ```
-4. Modify .github/workflows/pages-deploy.yml to run the protector after site build:
+5. Modify .github/workflows/pages-deploy.yml to run the protector after site build:
 ```yaml
 - name: Run site protector
   run: bundle exec ruby _plugins/protector.rb
   env:
     PROTECTOR_PASSWORD: ${{ secrets.PROTECTOR_PASSWORD }}
 ```
-5. Add your password as a GitHub Actions secret:
+6. Add your password as a GitHub Actions secret:
 Go to Settings → Secrets and variables → Actions → New repository secret
 Name it PROTECTOR_PASSWORD
 
