@@ -83,7 +83,7 @@ PROTECTOR_PASSWORD="yoursecret" python3 encrypt_md.py
 
 1. After build, protector.rb searches for posts in the Protect category.
 2. The .content block is encrypted with AES-256-CBC.
-3 .The block is replaced with a modal + client-side WebCrypto decryption script.
+3. The block is replaced with a modal + client-side WebCrypto decryption script.
 4. Visitors must enter the password to view content.
 
 ## Demo UI (Modal)
