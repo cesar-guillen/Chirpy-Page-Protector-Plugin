@@ -35,16 +35,24 @@ If you leave them unencrypted:
 ```
 gem "nokogiri"
 ```
-5. Modify .github/workflows/pages-deploy.yml to run the protector after site build:
+5. Add your password as a GitHub Actions secret:
+Go to Settings → Secrets and variables → Actions → New repository secret
+Name it PROTECTOR_PASSWORD. This pasword will be used to encrypt the markdown files as well as the static built site.
+
+7. Modify .github/workflows/pages-deploy.yml to use the enviroment varaible and run the protector plugin after the site is built:
 ```yaml
-- name: Run site protector
+- name: Build site
+  run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
+  env:
+    JEKYLL_ENV: "production"
+    PROTECTOR_PASSWORD: ${{ secrets.PROTECTOR_PASSWORD }}
+    
+- name: Run protector
   run: bundle exec ruby _plugins/protector.rb
   env:
     PROTECTOR_PASSWORD: ${{ secrets.PROTECTOR_PASSWORD }}
 ```
-6. Add your password as a GitHub Actions secret:
-Go to Settings → Secrets and variables → Actions → New repository secret
-Name it PROTECTOR_PASSWORD
+
 
 ##  Usage 
 1. To encrypt markdown files and posts make sure that in your categories section you have written `Protect`
@@ -55,7 +63,7 @@ PROTECTOR_PASSWORD="yoursecret" python3 encrypt_md.py
 ```
 * This replaces the .md file with an encrypted YAML blob (first line starts with ciphertext:).
 * You should only commit the encrypted versions to GitHub.
-* Make sure that the password you use to encrypt markdown files is the same as the one in you GitHub env
+* Make sure that the password you use to encrypt markdown files is the same as the one in your GitHub env
 
 ## 🔄 How It Works
 ### 🔐 Markdown-Level Encryption
