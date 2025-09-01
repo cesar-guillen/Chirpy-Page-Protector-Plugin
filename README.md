@@ -12,7 +12,7 @@ This plugin provides two layers of protection for your Chirpy-based Jekyll blog:
 
 ⚡ Client-side decryption using the Web Crypto API
 
-📝 Protects only posts in the Active category (configurable by editing the script)
+📝 Protects only posts in the Protected category (configurable by editing the script)
 
 🎯 Works with Chirpy theme’s generated _site content
 
