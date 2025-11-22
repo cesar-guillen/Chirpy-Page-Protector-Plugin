@@ -36,7 +36,7 @@ If you leave them unencrypted:
 gem "nokogiri"
 ```
 5. Add your password as a GitHub Actions secret:
-Go to Settings → Secrets and variables → Actions → New repository secret
+Go to Settings → Secrets and variables → Actions → New repository secret.
 Name it PROTECTOR_PASSWORD. This pasword will be used to encrypt the markdown files as well as the static built site.
 
 7. Modify .github/workflows/pages-deploy.yml to use the enviroment varaible and run the protector plugin after the site is built:
