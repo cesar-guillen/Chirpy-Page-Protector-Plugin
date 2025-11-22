@@ -76,8 +76,8 @@ PROTECTOR_PASSWORD="yoursecret" python3 encrypt_md.py
 ### 🔓 Auto-Decryption (Build Step)
 
 1. `decrypt_md.rb` runs during the Jekyll build.
-2. If a file starts with ciphertext:, it is decrypted using your password.
-3. Jekyll builds the site normally.
+2. If a file starts with ciphertext:, it is decrypted using your password. This is done because Jenkyll will not build a post that is encrypted. 
+3. Jekyll builds the site normally. The posts will only be in cleartext after the build but will be encrypted before the github actions deploys the site.
 
 ### 🔒 Site-Level Encryption (Deployment Step)
 
